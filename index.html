@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iffran A — Mobile Application Architect</title>
+<meta name="description" content="Iffran A — Mobile Application Architect with 12+ years in Android, Kotlin, KMP and Jetpack Compose. Enterprise telecom, FinTech and e-commerce apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────  tokens  ───────────────────────── */
+:root{
+  --void:#131022;
+  --void-2:#171331;
+  --panel:#1C1836;
+  --panel-2:#221D42;
+  --line:#2E2856;
+  --line-soft:#26214A;
+  --peri:#A8A0FF;
+  --peri-dim:#6F67C4;
+  --apricot:#FFB067;
+  --mist:#CDC8EC;
+  --dim:#8078B0;
+  --white:#F4F2FF;
+
+  --display:"Bricolage Grotesque","Trebuchet MS",sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --gut:clamp(20px,5vw,64px);
+  --rule:1px solid var(--line-soft);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--void);
+  color:var(--mist);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(760px 520px at 78% -8%, rgba(168,160,255,.13), transparent 62%),
+    radial-gradient(620px 480px at 4% 34%, rgba(255,176,103,.06), transparent 60%);
+}
+a{color:inherit}
+::selection{background:var(--peri);color:var(--void)}
+:focus-visible{outline:2px solid var(--apricot);outline-offset:3px;border-radius:3px}
+
+.wrap{max-width:1160px;margin:0 auto;padding:0 var(--gut);position:relative;z-index:1}
+
+/* ─────────────────────────  nav  ───────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(19,16,34,.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:var(--rule);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;height:62px}
+.brand{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--white);letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
+.brand span{color:var(--peri)}
+.nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:12.5px;letter-spacing:.01em}
+.nav-links a{color:var(--dim);text-decoration:none;transition:color .18s}
+.nav-links a:hover{color:var(--peri)}
+@media(max-width:840px){.nav-links{display:none}}
+
+/* ─────────────────────────  hero  ───────────────────────── */
+.hero{padding:clamp(52px,8vw,104px) 0 clamp(44px,6vw,76px)}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(32px,5vw,68px);align-items:center}
+@media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:44px}}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--apricot);
+  display:flex;align-items:center;gap:11px;margin:0 0 22px;
+}
+.eyebrow::after{content:"";height:1px;flex:1;max-width:120px;background:linear-gradient(90deg,var(--line),transparent)}
+
+h1.name{
+  font-family:var(--display);
+  font-size:clamp(40px,6.4vw,74px);
+  font-weight:800;line-height:.94;letter-spacing:-.035em;
+  color:var(--white);margin:0 0 20px;
+}
+.thesis{
+  font-family:var(--display);
+  font-size:clamp(19px,2.3vw,26px);
+  font-weight:500;line-height:1.3;letter-spacing:-.018em;
+  color:var(--peri);margin:0 0 22px;max-width:22ch;
+}
+.hero p.lede{font-size:16.5px;color:var(--mist);max-width:48ch;margin:0 0 32px}
+.hero p.lede strong{color:var(--white);font-weight:600}
+
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  font-family:var(--mono);font-size:13px;font-weight:500;
+  text-decoration:none;padding:12px 20px;border-radius:9px;
+  display:inline-flex;align-items:center;gap:9px;
+  transition:transform .16s,background .16s,border-color .16s,color .16s;
+}
+.btn-primary{background:var(--peri);color:#150F2E;font-weight:700}
+.btn-primary:hover{background:#BDB6FF;transform:translateY(-2px)}
+.btn-ghost{border:1px solid var(--line);color:var(--mist);background:var(--panel)}
+.btn-ghost:hover{border-color:var(--peri);color:var(--white);transform:translateY(-2px)}
+.status{
+  font-family:var(--mono);font-size:12px;color:var(--dim);
+  margin-top:22px;display:flex;align-items:center;gap:9px;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--apricot);box-shadow:0 0 0 4px rgba(255,176,103,.16)}
+
+/* ─────────────────────────  module graph (signature)  ───────────────────────── */
+.graph-card{
+  background:linear-gradient(180deg,var(--panel) 0%,var(--void-2) 100%);
+  border:1px solid var(--line);border-radius:16px;
+  padding:20px 20px 16px;
+}
+.graph-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim);border-bottom:var(--rule);padding-bottom:12px;margin-bottom:6px;
+}
+.graph-head b{color:var(--peri);font-weight:500}
+#graph{width:100%;height:auto;display:block}
+.gnode rect{
+  fill:var(--panel-2);stroke:var(--line);stroke-width:1.2;
+  transition:fill .18s,stroke .18s;
+}
+.gnode text{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;fill:var(--mist);
+  transition:fill .18s;
+}
+.gnode{cursor:pointer}
+.gnode:hover rect,.gnode.on rect{fill:#2C2455;stroke:var(--apricot)}
+.gnode:hover text,.gnode.on text{fill:var(--white)}
+.gnode.root rect{fill:#251E4E;stroke:var(--peri-dim)}
+.gnode.root text{fill:var(--peri)}
+.gedge{fill:none;stroke:var(--line);stroke-width:1.3;transition:stroke .18s,stroke-width .18s}
+.gedge.lit{stroke:var(--apricot);stroke-width:2}
+.graph.dimmed .gnode:not(.on){opacity:.34}
+.graph-caption{
+  font-family:var(--mono);font-size:12px;color:var(--dim);
+  border-top:var(--rule);padding-top:12px;margin-top:6px;min-height:38px;line-height:1.5;
+}
+.graph-caption b{color:var(--apricot);font-weight:500}
+
+@media (prefers-reduced-motion: no-preference){
+  .gedge{stroke-dasharray:340;stroke-dashoffset:340;animation:draw .9s ease forwards}
+  .gnode{opacity:0;animation:rise .5s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+}
+
+/* ─────────────────────────  metrics  ───────────────────────── */
+.metrics{border-top:var(--rule);border-bottom:var(--rule);background:rgba(28,24,54,.44)}
+.metrics-in{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line-soft)}
+.metric{background:var(--void);padding:26px 18px}
+.metric b{
+  display:block;font-family:var(--display);font-size:clamp(26px,3.2vw,36px);
+  font-weight:800;letter-spacing:-.03em;color:var(--white);line-height:1;margin-bottom:7px;
+}
+.metric span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--dim);text-transform:uppercase}
+@media(max-width:880px){.metrics-in{grid-template-columns:repeat(2,1fr)}.metric:last-child{grid-column:1/-1}}
+
+/* ─────────────────────────  section shell  ───────────────────────── */
+.sec{padding:clamp(58px,8vw,104px) 0}
+.sec-head{margin-bottom:clamp(30px,4vw,46px);max-width:62ch}
+.sec-tag{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--apricot);margin:0 0 13px;
+}
+.sec-head h2{
+  font-family:var(--display);font-size:clamp(28px,4.2vw,44px);font-weight:700;
+  letter-spacing:-.032em;line-height:1.04;color:var(--white);margin:0 0 13px;
+}
+.sec-head p{margin:0;color:var(--dim);font-size:16px;max-width:56ch}
+
+/* ─────────────────────────  skills / version catalog  ───────────────────────── */
+.cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.cat-block{
+  background:var(--panel);border:1px solid var(--line-soft);border-radius:13px;
+  padding:19px 19px 17px;transition:border-color .2s,transform .2s,background .2s;
+}
+.cat-block:hover{border-color:var(--peri-dim);transform:translateY(-3px);background:var(--panel-2)}
+.cat-key{
+  font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--peri);
+  margin:0 0 4px;letter-spacing:-.01em;word-break:break-word;
+}
+.cat-note{font-family:var(--mono);font-size:11px;color:var(--dim);margin:0 0 14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.chips li{
+  font-family:var(--mono);font-size:11.5px;color:var(--mist);
+  background:rgba(46,40,86,.55);border:1px solid var(--line-soft);
+  padding:4px 9px;border-radius:6px;line-height:1.45;
+}
+.cat-block:hover .chips li{border-color:var(--line)}
+
+/* ─────────────────────────  projects  ───────────────────────── */
+.projects{display:grid;gap:14px}
+.proj{
+  background:var(--panel);border:1px solid var(--line-soft);border-radius:14px;
+  padding:clamp(20px,3vw,30px);
+  display:grid;grid-template-columns:200px 1fr;gap:clamp(18px,3vw,38px);
+  transition:border-color .2s,background .2s;
+}
+.proj:hover{border-color:var(--peri-dim);background:var(--panel-2)}
+@media(max-width:820px){.proj{grid-template-columns:1fr;gap:16px}}
+.proj-path{font-family:var(--mono);font-size:11.5px;color:var(--peri);word-break:break-all;margin:0 0 9px}
+.proj-role{
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--apricot);border:1px solid rgba(255,176,103,.3);border-radius:5px;
+  padding:3px 8px;display:inline-block;
+}
+.proj h3{
+  font-family:var(--display);font-size:clamp(21px,2.6vw,27px);font-weight:700;
+  letter-spacing:-.026em;color:var(--white);margin:0 0 11px;line-height:1.14;
+}
+.proj p{margin:0 0 14px;font-size:15.4px;color:var(--mist)}
+.arch{
+  font-size:14.2px;color:var(--dim);border-left:2px solid var(--peri-dim);
+  padding-left:14px;margin:0 0 16px;
+}
+.arch b{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--peri);display:block;margin-bottom:5px;font-weight:500;
+}
+
+/* ─────────────────────────  timeline  ───────────────────────── */
+.track{list-style:none;margin:0;padding:0;position:relative}
+.track::before{content:"";position:absolute;left:6px;top:12px;bottom:12px;width:1px;background:var(--line)}
+.track li{position:relative;padding:0 0 30px 34px}
+.track li:last-child{padding-bottom:0}
+.track li::before{
+  content:"";position:absolute;left:0;top:9px;width:13px;height:13px;border-radius:50%;
+  background:var(--void);border:2px solid var(--peri-dim);
+}
+.track li.now::before{border-color:var(--apricot);background:var(--apricot);box-shadow:0 0 0 5px rgba(255,176,103,.15)}
+.track .yrs{font-family:var(--mono);font-size:11.5px;color:var(--apricot);letter-spacing:.03em}
+.track h3{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-.022em;color:var(--white);margin:5px 0 3px}
+.track .org{font-size:14.6px;color:var(--dim);margin:0}
+
+/* ─────────────────────────  foundation  ───────────────────────── */
+.found{display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
+@media(max-width:820px){.found{grid-template-columns:1fr}}
+.slab{background:var(--panel);border:1px solid var(--line-soft);border-radius:13px;padding:24px}
+.slab h3{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--peri);margin:0 0 18px;font-weight:500;
+}
+.edu{margin:0 0 18px;padding:0 0 18px;border-bottom:var(--rule)}
+.edu:last-child{margin:0;padding:0;border:0}
+.edu b{display:block;font-family:var(--display);font-size:17.5px;font-weight:700;letter-spacing:-.02em;color:var(--white);line-height:1.25}
+.edu span{font-size:14.4px;color:var(--dim)}
+.edu i{font-family:var(--mono);font-size:12px;color:var(--apricot);font-style:normal;display:block;margin-top:3px}
+.certs{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.certs li{
+  font-family:var(--mono);font-size:13px;color:var(--mist);
+  padding:11px 13px;background:rgba(46,40,86,.45);border:1px solid var(--line-soft);
+  border-radius:8px;display:flex;align-items:center;gap:10px;
+}
+.certs li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--apricot);flex:none}
+
+/* ─────────────────────────  contact  ───────────────────────── */
+.contact{border-top:var(--rule);padding:clamp(58px,8vw,96px) 0 0}
+.contact h2{
+  font-family:var(--display);font-size:clamp(30px,5.4vw,58px);font-weight:800;
+  letter-spacing:-.035em;line-height:1;color:var(--white);margin:0 0 16px;
+}
+.contact p{color:var(--dim);max-width:46ch;margin:0 0 30px;font-size:16px}
+.reach{display:flex;flex-wrap:wrap;gap:12px}
+.foot{
+  margin-top:clamp(52px,7vw,84px);border-top:var(--rule);padding:22px 0 30px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11.5px;color:var(--dim);
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">iffran<span>.a</span> <span style="color:var(--dim)">/ android-architect</span></a>
+    <div class="nav-links">
+      <a href="#stack">stack</a>
+      <a href="#work">work</a>
+      <a href="#track">track</a>
+      <a href="#foundation">foundation</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Mobile Application Architect</p>
+      <h1 class="name">Iffran A</h1>
+      <p class="thesis">I draw the module graph before anyone draws a screen.</p>
+      <p class="lede">
+        Twelve years of Android, the last three spent owning architecture rather than features —
+        module boundaries, dependency graphs, build times, and performance budgets.
+        I've shipped for <strong>enterprise telecom</strong>, <strong>AEPS micro-ATM FinTech</strong>,
+        and <strong>grocery marketplaces</strong>, most recently in Kotlin Multiplatform and Jetpack Compose.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:iffransd@gmail.com">Email me</a>
+        <a class="btn btn-ghost" href="tel:+919976706470">+91 99767 06470</a>
+        <a class="btn btn-ghost" href="#work">See the work</a>
+      </div>
+      <p class="status"><span class="dot"></span> Android Architect at Infosys · available to start immediately</p>
+    </div>
+
+    <div class="graph-card">
+      <div class="graph-head"><span>dependency graph</span><b>:iffran</b></div>
+      <div class="graph" id="graphWrap">
+        <svg id="graph" viewBox="0 0 520 440" role="img" aria-label="A module dependency graph mapping Iffran's skill areas as Gradle modules.">
+          <g id="edges"></g>
+          <g id="nodes"></g>
+        </svg>
+      </div>
+      <p class="graph-caption" id="cap">Hover a module to see what's inside it.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ METRICS ══════════ -->
+<section class="metrics">
+  <div class="wrap">
+    <div class="metrics-in">
+      <div class="metric"><b>12+</b><span>years on Android</span></div>
+      <div class="metric"><b>3+</b><span>years as architect</span></div>
+      <div class="metric"><b>10+</b><span>engineers mentored</span></div>
+      <div class="metric"><b>7</b><span>products shipped</span></div>
+      <div class="metric"><b>50%</b><span>faster onboarding</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STACK ══════════ -->
+<section class="sec" id="stack">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">the stack</p>
+      <h2>Everything I reach for, filed the way I'd file it in a build.</h2>
+      <p>Grouped by the module each concern would actually live in — not by marketing category.</p>
+    </div>
+
+    <div class="cat">
+      <div class="cat-block">
+        <p class="cat-key">:architecture</p>
+        <p class="cat-note">how the app is shaped</p>
+        <ul class="chips">
+          <li>Clean Architecture</li><li>MVVM</li><li>MVI</li><li>MVP</li><li>Multi-module</li>
+          <li>Feature modularization</li><li>SOLID</li><li>Repository pattern</li><li>Use Case / Interactor</li>
+          <li>Offline-first design</li><li>Unidirectional data flow</li><li>Single source of truth</li>
+          <li>Domain-driven boundaries</li><li>API integration strategy</li><li>Performance budgets</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:language</p>
+        <p class="cat-note">what it's written in</p>
+        <ul class="chips">
+          <li>Kotlin</li><li>Java</li><li>Kotlin Multiplatform</li><li>Coroutines</li><li>Flow</li>
+          <li>StateFlow / SharedFlow</li><li>Channels</li><li>Sealed classes</li><li>Data classes</li>
+          <li>Extension functions</li><li>DSL builders</li><li>Kotlin contracts</li><li>expect / actual</li>
+          <li>KSP</li><li>KAPT</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:ui</p>
+        <p class="cat-note">what people touch</p>
+        <ul class="chips">
+          <li>Jetpack Compose</li><li>Material 3</li><li>Material You / dynamic color</li><li>Compose Navigation</li>
+          <li>Compose animation</li><li>Custom layouts</li><li>Canvas drawing</li><li>XML / View system</li>
+          <li>ConstraintLayout</li><li>MotionLayout</li><li>Custom Views</li><li>RecyclerView / DiffUtil</li>
+          <li>ViewBinding</li><li>Edge-to-edge</li><li>Adaptive & foldable layouts</li><li>Dark theme</li>
+          <li>Splash Screen API</li><li>App widgets</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:jetpack</p>
+        <p class="cat-note">the platform libraries</p>
+        <ul class="chips">
+          <li>ViewModel</li><li>LiveData</li><li>Lifecycle</li><li>Navigation</li><li>Room</li>
+          <li>WorkManager</li><li>Paging 3</li><li>DataStore</li><li>Hilt</li><li>App Startup</li>
+          <li>CameraX</li><li>Media3 / ExoPlayer</li><li>Biometric</li><li>SavedStateHandle</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:network</p>
+        <p class="cat-note">talking to the backend</p>
+        <ul class="chips">
+          <li>Retrofit</li><li>OkHttp</li><li>Ktor Client</li><li>Interceptors</li><li>Moshi</li><li>Gson</li>
+          <li>kotlinx.serialization</li><li>GraphQL (Apollo)</li><li>REST design</li><li>WebSockets</li>
+          <li>Token refresh &amp; auth flows</li><li>Retry / backoff</li><li>Certificate pinning</li>
+          <li>Charles Proxy</li><li>Postman</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:data</p>
+        <p class="cat-note">state that survives</p>
+        <ul class="chips">
+          <li>Room</li><li>SQLDelight</li><li>DataStore (Preferences)</li><li>DataStore (Proto)</li>
+          <li>Encrypted SharedPreferences</li><li>Caching strategies</li><li>Sync &amp; conflict handling</li>
+          <li>Pagination</li><li>Migrations</li><li>File &amp; scoped storage</li><li>ContentProvider</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:device</p>
+        <p class="cat-note">hardware &amp; OS surface</p>
+        <ul class="chips">
+          <li>Bluetooth Classic</li><li>BLE</li><li>Bluetooth thermal printers</li><li>NFC</li>
+          <li>Camera2 / CameraX</li><li>Google Maps SDK</li><li>Location &amp; Geofencing</li>
+          <li>FCM push notifications</li><li>Background services</li><li>Foreground services</li>
+          <li>Broadcast receivers</li><li>Deep links &amp; App Links</li><li>Runtime permissions</li>
+          <li>Biometric hardware (Mantra / Morpho)</li><li>Sensors</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:core:security</p>
+        <p class="cat-note">money and identity</p>
+        <ul class="chips">
+          <li>BiometricPrompt</li><li>Android Keystore</li><li>Encrypted storage</li><li>Secure token handling</li>
+          <li>OAuth 2.0 / JWT</li><li>Role-based feature gating</li><li>PCI-aware data handling</li>
+          <li>AEPS protocol</li><li>Play Integrity</li><li>Root &amp; tamper detection</li>
+          <li>ProGuard / R8 obfuscation</li><li>Secrets management</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:test</p>
+        <p class="cat-note">proof it works</p>
+        <ul class="chips">
+          <li>JUnit 4 / 5</li><li>Mockito</li><li>MockK</li><li>Turbine</li><li>Robolectric</li>
+          <li>Compose UI Testing</li><li>Espresso</li><li>UI Automator</li><li>Coroutine test dispatchers</li>
+          <li>Fakes over mocks</li><li>Screenshot testing</li><li>Test pyramid strategy</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:build-logic</p>
+        <p class="cat-note">how it compiles</p>
+        <ul class="chips">
+          <li>Gradle Kotlin DSL</li><li>Convention plugins</li><li>Version catalogs</li>
+          <li>Multi-module builds</li><li>Build variants &amp; flavors</li><li>R8 / ProGuard rules</li>
+          <li>App Bundles (AAB)</li><li>Dynamic feature delivery</li><li>Build cache</li>
+          <li>Configuration cache</li><li>Dependency locking</li><li>Detekt</li><li>ktlint</li><li>SonarQube</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:performance</p>
+        <p class="cat-note">making it fast, keeping it fast</p>
+        <ul class="chips">
+          <li>Baseline Profiles</li><li>Macrobenchmark</li><li>Microbenchmark</li>
+          <li>Android Studio Profilers</li><li>Startup time</li><li>Jank &amp; frame timing</li>
+          <li>Compose recomposition tuning</li><li>LeakCanary</li><li>StrictMode</li><li>ANR triage</li>
+          <li>Memory &amp; battery profiling</li><li>APK / AAB size reduction</li>
+          <li>Firebase Performance Monitoring</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:ci-cd</p>
+        <p class="cat-note">getting it to the store</p>
+        <ul class="chips">
+          <li>Azure DevOps</li><li>GitHub Actions</li><li>Fastlane</li><li>Automated Play Store deploys</li>
+          <li>Signed app bundles</li><li>Play App Signing</li><li>Internal / closed / open tracks</li>
+          <li>Staged rollouts</li><li>Firebase App Distribution</li><li>Release trains</li><li>Git / branching strategy</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:observability</p>
+        <p class="cat-note">knowing what happened in production</p>
+        <ul class="chips">
+          <li>Firebase Crashlytics</li><li>Firebase Analytics</li><li>Remote Config</li>
+          <li>Feature flags</li><li>A/B testing</li><li>Event taxonomy design</li>
+          <li>Custom logging &amp; Timber</li><li>Crash-free rate targets</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:cross-platform</p>
+        <p class="cat-note">beyond one OS</p>
+        <ul class="chips">
+          <li>Kotlin Multiplatform</li><li>Compose Multiplatform</li><li>Ktor</li><li>Koin</li>
+          <li>Flutter SDK</li><li>Dart</li><li>Swift</li><li>SwiftUI</li><li>UIKit</li><li>Combine</li>
+          <li>Core Data</li><li>Native ↔ Flutter bridging</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:payments</p>
+        <p class="cat-note">transactions in the wild</p>
+        <ul class="chips">
+          <li>Razorpay</li><li>Cashfree</li><li>AEPS / micro-ATM</li><li>Google Play Billing</li>
+          <li>UPI intent flows</li><li>Idempotent transaction design</li><li>Offline-safe transaction queue</li>
+          <li>Receipt &amp; ticket printing</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:quality</p>
+        <p class="cat-note">the things reviewers notice</p>
+        <ul class="chips">
+          <li>Accessibility / TalkBack</li><li>Content descriptions</li><li>Dynamic type</li>
+          <li>Localization &amp; RTL</li><li>Play Store policy compliance</li><li>Target SDK upgrades</li>
+          <li>Android 14 / 15 behaviour changes</li><li>Backward compatibility</li><li>In-app updates &amp; review</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:ai-tooling</p>
+        <p class="cat-note">how I work faster now</p>
+        <ul class="chips">
+          <li>Claude Code</li><li>Prompt engineering</li><li>AI-assisted refactoring</li>
+          <li>Test generation</li><li>Automated documentation</li><li>Codebase Q&amp;A</li>
+          <li>Migration scripting</li><li>Review augmentation</li><li>Generative AI foundations</li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <p class="cat-key">:leadership</p>
+        <p class="cat-note">the part that isn't code</p>
+        <ul class="chips">
+          <li>Team mentorship</li><li>Architecture reviews</li><li>Code reviews</li><li>Technical roadmapping</li>
+          <li>Hiring &amp; interviewing</li><li>Agile / Scrum</li><li>Stakeholder communication</li>
+          <li>Estimation</li><li>Onboarding design</li><li>Jira</li><li>Confluence</li><li>Figma handoff</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WORK ══════════ -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">shipped</p>
+      <h2>Seven products, three industries, one architectural habit.</h2>
+      <p>Each one is listed with the decision I actually owned — not just the feature list.</p>
+    </div>
+
+    <div class="projects">
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:food-bite</p>
+          <span class="proj-role">Android Architect</span>
+        </div>
+        <div>
+          <h3>Food Bite</h3>
+          <p>A single-restaurant B2C ordering app built on Kotlin Multiplatform so Android and iOS share one brain. Customers browse the menu, build a cart, pay, and watch delivery move in real time. I built the shared KMP module for networking, caching and domain logic while keeping UI and payments native on each platform — Compose on Android, SwiftUI on iOS.</p>
+          <p class="arch"><b>What I owned</b>KMP shared domain + data layers, expect/actual platform abstractions, Ktor networking, SQLDelight shared storage, Koin DI, and a single source of truth for menu, cart, order and payment state across both platforms.</p>
+          <ul class="chips">
+            <li>Kotlin Multiplatform</li><li>Ktor</li><li>SQLDelight</li><li>Coroutines</li><li>Flow</li>
+            <li>Koin</li><li>Razorpay</li><li>Jetpack Compose</li><li>SwiftUI</li><li>Google Maps</li><li>FCM</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:mobily-b2b</p>
+          <span class="proj-role">Android Architect</span>
+        </div>
+        <div>
+          <h3>Mobily B2B</h3>
+          <p>A secure B2B Android app for enterprise telecom clients managing corporate services. Business administrators monitor usage, manage SIM fleets, handle billing and raise support from the device — cutting administrative overhead and giving real-time control over telecom spend.</p>
+          <p class="arch"><b>What I owned</b>The multi-module split (app / feature / data / domain / core), the Clean Architecture + MVVM blueprint the team built against, Hilt dependency injection, a standardized network and data layer, offline-first Room caching, secure token storage, and role-based feature gating.</p>
+          <ul class="chips">
+            <li>Kotlin</li><li>Jetpack Compose</li><li>Coroutines</li><li>Flow</li><li>Hilt</li>
+            <li>Retrofit</li><li>Room</li><li>Firebase</li><li>MVVM</li><li>Clean Architecture</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:my-digicel</p>
+          <span class="proj-role">Lead Android Developer</span>
+        </div>
+        <div>
+          <h3>My Digicel <span style="color:var(--dim);font-weight:500">(Telstra)</span></h3>
+          <p>A self-service telecom app giving customers round-the-clock control of their mobile accounts — usage tracking, bill payment, plan management and support — measurably reducing call-centre load.</p>
+          <p class="arch"><b>What I owned</b>Android-side architecture inside a Flutter shell, keeping native performance parity, deep-link integration, secure auth flow, and FCM-driven engagement campaigns instrumented through Firebase Analytics and Crashlytics.</p>
+          <ul class="chips">
+            <li>Kotlin</li><li>Android SDK</li><li>Flutter SDK</li><li>Dart</li><li>Firebase</li><li>MVVM</li><li>Deep links</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:paytrav</p>
+          <span class="proj-role">Lead Android Developer</span>
+        </div>
+        <div>
+          <h3>PayTrav</h3>
+          <p>A FinTech app that turns a retail agent's phone into a Micro ATM. Aadhaar-Enabled Payment System services — biometric cash withdrawal, balance inquiry, bill payments and domestic transfers — bringing banking to underbanked regions.</p>
+          <p class="arch"><b>What I owned</b>The secure transaction architecture end to end: biometric device integration (Mantra, Morpho), encrypted local storage, AEPS protocol integration, PCI-aware data handling, and a retry-safe offline transaction queue so a dropped connection never loses a customer's money.</p>
+          <ul class="chips">
+            <li>Kotlin</li><li>Android SDK</li><li>AEPS SDK</li><li>Biometric scanners</li><li>Retrofit</li>
+            <li>Firebase</li><li>MVVM</li><li>Encrypted storage</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:smart-salez:customer</p>
+          <span class="proj-role">Lead Android Developer</span>
+        </div>
+        <div>
+          <h3>Smart Salez — Customer</h3>
+          <p>A full grocery e-commerce app: product catalog, saved shopping lists, scheduled and express delivery, live order tracking and secure checkout.</p>
+          <p class="arch"><b>What I owned</b>The modular feature structure that let catalog, cart, checkout and tracking teams build in parallel without stepping on each other.</p>
+          <ul class="chips">
+            <li>Kotlin</li><li>Android SDK</li><li>MVVM</li><li>Cashfree Payments</li><li>Google Maps</li><li>FCM</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:smart-salez:retailer</p>
+          <span class="proj-role">Lead Android Developer</span>
+        </div>
+        <div>
+          <h3>Smart Salez — Retailer</h3>
+          <p>The other side of the marketplace — a mobile admin panel for store owners. Instant order receipt, status updates, stock availability and live sales monitoring, so running the shop no longer meant sitting at the desktop.</p>
+          <p class="arch"><b>What I owned</b>Real-time order push architecture and the shared design language between the customer and retailer apps.</p>
+          <ul class="chips">
+            <li>Kotlin</li><li>Android SDK</li><li>MVVM</li><li>Cashfree Payments</li><li>FCM</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div>
+          <p class="proj-path">:work:smart-parking:pos</p>
+          <span class="proj-role">Lead Android Developer</span>
+        </div>
+        <div>
+          <h3>Smart Parking — POS</h3>
+          <p>A point-of-sale app for parking attendants: process a transaction and print the ticket in seconds, on hardware that has to work every time in a booth with no signal.</p>
+          <p class="arch"><b>What I owned</b>Bluetooth thermal printer integration and the transaction flow built for speed under repetition.</p>
+          <ul class="chips">
+            <li>Java</li><li>Android SDK</li><li>Bluetooth Printer SDK</li><li>Bluetooth Classic</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TRACK ══════════ -->
+<section class="sec" id="track">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">track</p>
+      <h2>Twelve years, in order.</h2>
+      <p>From building screens to owning the system they live in.</p>
+    </div>
+    <ol class="track">
+      <li class="now">
+        <span class="yrs">Dec 2022 — Present · 3.5 yrs</span>
+        <h3>Digital Solution Specialist — Android Architect</h3>
+        <p class="org">Infosys Ltd. · Bangalore</p>
+      </li>
+      <li>
+        <span class="yrs">Jul 2018 — Dec 2022 · 4 yrs</span>
+        <h3>Senior Android Developer / Lead Developer</h3>
+        <p class="org">GI Tech Gaming Pvt Ltd. · Chennai</p>
+      </li>
+      <li>
+        <span class="yrs">Nov 2016 — Jun 2018 · 1.5 yrs</span>
+        <h3>Senior Android Developer</h3>
+        <p class="org">AppRaam Labs Pvt Ltd. · Bengaluru</p>
+      </li>
+      <li>
+        <span class="yrs">Oct 2015 — Oct 2016 · 1 yr</span>
+        <h3>Android Application Developer</h3>
+        <p class="org">Flycart Inc. · Coimbatore</p>
+      </li>
+      <li>
+        <span class="yrs">Feb 2014 — Oct 2015 · 1.7 yrs</span>
+        <h3>Android Application Developer</h3>
+        <p class="org">Contus Interactive Support Pvt Ltd. · Chennai</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════ FOUNDATION ══════════ -->
+<section class="sec" id="foundation">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-tag">foundation</p>
+      <h2>Where it started.</h2>
+    </div>
+    <div class="found">
+      <div class="slab">
+        <h3>Education</h3>
+        <div class="edu">
+          <b>M.Sc. Software Engineering — 5-year Integrated</b>
+          <span>Kongu Engineering College, Anna University</span>
+          <i>2012 · CGPA 7.45</i>
+        </div>
+        <div class="edu">
+          <b>H.S.C.</b>
+          <span>St. Joseph Mat. Hr. Sec. School, Palani</span>
+          <i>2007 · 67.4%</i>
+        </div>
+        <div class="edu">
+          <b>S.S.L.C.</b>
+          <span>St. Joseph Mat. Hr. Sec. School, Palani</span>
+          <i>2005 · 61.27%</i>
+        </div>
+      </div>
+      <div class="slab">
+        <h3>Certifications</h3>
+        <ul class="certs">
+          <li>Certified AI Professional</li>
+          <li>Certified Generative AI Foundation</li>
+          <li>Certified Prompt Engineer</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Let's talk architecture.</h2>
+    <p>I'm open to Mobile Architect and Lead Android roles, and I can start immediately.</p>
+    <div class="reach">
+      <a class="btn btn-primary" href="mailto:iffransd@gmail.com">iffransd@gmail.com</a>
+      <a class="btn btn-ghost" href="tel:+919976706470">+91 99767 06470</a>
+    </div>
+    <div class="wrap foot" style="padding-left:0;padding-right:0;max-width:none">
+      <span>Iffran A · Mobile Application Architect · Coimbatore, India</span>
+      <span>Kotlin · KMP · Compose</span>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── module dependency graph ─── */
+const N = [
+  {id:'app',   label:':app',            cx:260, y:26,  w:74,  root:1, cap:'The delivered product. Where features, DI wiring and release configuration converge.'},
+  {id:'f1',    label:':feature:telecom',cx:100, y:122, w:150, cap:'Mobily B2B and My Digicel — SIM fleet management, usage, billing, self-service.'},
+  {id:'f2',    label:':feature:fintech',cx:260, y:122, w:142, cap:'PayTrav — AEPS micro-ATM, biometric withdrawal, offline-safe transaction queue.'},
+  {id:'f3',    label:':feature:commerce',cx:424,y:122, w:160, cap:'Food Bite and Smart Salez — catalog, cart, checkout, live delivery tracking.'},
+  {id:'c1',    label:':core:ui',        cx:60,  y:218, w:88,  cap:'Jetpack Compose, Material 3, custom layouts, animation, adaptive and foldable UI.'},
+  {id:'c2',    label:':core:data',      cx:180, y:218, w:100, cap:'Room, SQLDelight, DataStore, caching and sync strategy, offline-first design.'},
+  {id:'c3',    label:':core:network',   cx:320, y:218, w:124, cap:'Retrofit, OkHttp, Ktor, GraphQL, auth and token refresh, retry and backoff.'},
+  {id:'c4',    label:':core:device',    cx:452, y:218, w:116, cap:'BLE, NFC, CameraX, Maps, thermal printers, biometric hardware, FCM.'},
+  {id:'d1',    label:':domain',         cx:150, y:314, w:88,  cap:'Use cases and business rules. Pure Kotlin, no Android — shareable through KMP.'},
+  {id:'d2',    label:':core:security',  cx:330, y:314, w:126, cap:'Keystore, encrypted storage, BiometricPrompt, PCI-aware handling, R8 obfuscation.'},
+  {id:'b1',    label:':build-logic',    cx:150, y:390, w:114, cap:'Gradle Kotlin DSL, convention plugins, version catalogs, variants, R8 rules.'},
+  {id:'b2',    label:':ci-cd',          cx:330, y:390, w:80,  cap:'Azure DevOps, GitHub Actions, Fastlane, signed bundles, staged Play Store rollouts.'}
+];
+const E = [
+  ['app','f1'],['app','f2'],['app','f3'],
+  ['f1','c1'],['f1','c2'],
+  ['f2','c2'],['f2','c3'],
+  ['f3','c3'],['f3','c4'],
+  ['c1','d1'],['c2','d1'],
+  ['c3','d2'],['c4','d2'],
+  ['d1','b1'],['d2','b2']
+];
+const H = 32, NS = 'http://www.w3.org/2000/svg';
+const map = Object.fromEntries(N.map(n => [n.id, n]));
+const gE = document.getElementById('edges'), gN = document.getElementById('nodes');
+const wrap = document.getElementById('graphWrap'), cap = document.getElementById('cap');
+const defaultCap = cap.innerHTML;
+
+E.forEach(([a,b], i) => {
+  const s = map[a], t = map[b];
+  const y1 = s.y + H, y2 = t.y;
+  const p = document.createElementNS(NS,'path');
+  p.setAttribute('d', `M${s.cx} ${y1} C${s.cx} ${y1+34}, ${t.cx} ${y2-34}, ${t.cx} ${y2}`);
+  p.setAttribute('class','gedge');
+  p.dataset.a = a; p.dataset.b = b;
+  p.style.animationDelay = (0.25 + i*0.035) + 's';
+  gE.appendChild(p);
+});
+
+N.forEach((n, i) => {
+  const g = document.createElementNS(NS,'g');
+  g.setAttribute('class','gnode' + (n.root ? ' root' : ''));
+  g.setAttribute('tabindex','0');
+  g.dataset.id = n.id;
+
+  const r = document.createElementNS(NS,'rect');
+  r.setAttribute('x', n.cx - n.w/2); r.setAttribute('y', n.y);
+  r.setAttribute('width', n.w); r.setAttribute('height', H);
+  r.setAttribute('rx', 8);
+
+  const t = document.createElementNS(NS,'text');
+  t.setAttribute('x', n.cx); t.setAttribute('y', n.y + H/2 + 4);
+  t.setAttribute('text-anchor','middle');
+  t.textContent = n.label;
+
+  g.style.animationDelay = (i*0.05) + 's';
+  g.append(r, t);
+
+  const on = () => {
+    wrap.classList.add('dimmed');
+    document.querySelectorAll('.gnode').forEach(x => x.classList.remove('on'));
+    g.classList.add('on');
+    document.querySelectorAll('.gedge').forEach(e => {
+      const lit = e.dataset.a === n.id || e.dataset.b === n.id;
+      e.classList.toggle('lit', lit);
+      if (lit) {
+        [e.dataset.a, e.dataset.b].forEach(id =>
+          document.querySelector(`.gnode[data-id="${id}"]`).classList.add('on'));
+      }
+    });
+    cap.innerHTML = `<b>${n.label}</b> — ${n.cap}`;
+  };
+  const off = () => {
+    wrap.classList.remove('dimmed');
+    document.querySelectorAll('.gnode').forEach(x => x.classList.remove('on'));
+    document.querySelectorAll('.gedge').forEach(e => e.classList.remove('lit'));
+    cap.innerHTML = defaultCap;
+  };
+  g.addEventListener('mouseenter', on);
+  g.addEventListener('mouseleave', off);
+  g.addEventListener('focus', on);
+  g.addEventListener('blur', off);
+
+  gN.appendChild(g);
+});
+</script>
+</body>
+</html>
